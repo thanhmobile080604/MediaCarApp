@@ -43,21 +43,26 @@ class PlaybackPreparer(
 
     override fun onPrepare(playWhenReady: Boolean) {
         logd("prepare - play: $playWhenReady")
-        player.playWhenReady = playWhenReady
-        player.stop()
-        player.prepare()
+        val allSongs = mediaLibrary.getAllSongs()
+        if (allSongs.isNotEmpty()) {
+            player.playWhenReady = playWhenReady
+            player.stop()
+            player.setMediaItems(allSongs.map { it.toExoMediaItem() }, 0, 0)
+            player.prepare()
+        }
     }
 
     override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
-        val playableMedia = mediaLibrary.getSongById(mediaId)?.toExoMediaItem()
-        if (playableMedia == null) {
-            loge("Media not found.")
+        val allSongs = mediaLibrary.getAllSongs()
+        val songIndex = allSongs.indexOfFirst { it.id == mediaId }
+        if (songIndex == -1) {
+            loge("Media not found: $mediaId")
             return
         }
-        logd(playableMedia.mediaMetadata.title.toString())
+        logd("prepare from media id: $mediaId at index: $songIndex")
         player.playWhenReady = playWhenReady
         player.stop()
-        player.setMediaItem(playableMedia)
+        player.setMediaItems(allSongs.map { it.toExoMediaItem() }, songIndex, 0)
         player.prepare()
     }
 

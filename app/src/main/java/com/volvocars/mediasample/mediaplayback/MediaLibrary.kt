@@ -53,6 +53,10 @@ class MediaLibrary(mediaItemFactory: MediaItemFactory, songRepository: SongRepos
     fun getSongById(id: String): MediaMetadataCompat? {
         return library[playlist.id]?.find { it.id == id }
     }
+
+    fun getAllSongs(): List<MediaMetadataCompat> {
+        return library[playlist.id] ?: emptyList()
+    }
 }
 
 const val BROWSABLE_ROOT_ID = "root/"

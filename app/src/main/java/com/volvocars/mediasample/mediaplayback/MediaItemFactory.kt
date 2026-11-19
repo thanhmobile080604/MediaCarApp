@@ -48,6 +48,8 @@ class MediaItemFactory(private val context: Context) {
             }.build()
 }
 
-fun MediaMetadataCompat.toExoMediaItem() = MediaItem.Builder()
+fun MediaMetadataCompat.toExoMediaItem(): MediaItem = MediaItem.Builder()
+        .setMediaId(id ?: "")
         .setUri(mediaUri)
+        .setTag(this)
         .build()

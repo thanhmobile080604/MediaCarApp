@@ -42,5 +42,33 @@ class PlaylistFactory(
             mediaUri = resourceUriUtil.getUriFor(R.raw.test_audio_track).toString(),
             artist = context.getString(R.string.sample_artist_name),
         )
+        ,
+        Song(
+            id = "second_song_id",
+            title = "Track 2 - Highway Drive",
+            subtitle = "Electronic Beats",
+            description = "Dynamic energetic beats for highway cruising",
+            mediaArtUri = resourceUriUtil.getUriFor(R.drawable.abba_album_art).toString(),
+            mediaUri = resourceUriUtil.getUriFor(R.raw.test_audio_track).toString(),
+            artist = "Nordic Horizon",
+        ),
+        Song(
+            id = "third_song_id",
+            title = "Track 3 - Midnight City",
+            subtitle = "Lo-Fi Ambient",
+            description = "Chill ambient vibes for nighttime commutes",
+            mediaArtUri = resourceUriUtil.getUriFor(R.drawable.abba_album_art).toString(),
+            mediaUri = resourceUriUtil.getUriFor(R.raw.test_audio_track).toString(),
+            artist = "Scandinavian Echoes",
+        ),
+        Song(
+            id = "fourth_song_id",
+            title = "Track 4 - Electric Horizon",
+            subtitle = "Synthwave Chill",
+            description = "Futuristic synthwave for electric vehicle journeys",
+            mediaArtUri = resourceUriUtil.getUriFor(R.drawable.abba_album_art).toString(),
+            mediaUri = resourceUriUtil.getUriFor(R.raw.test_audio_track).toString(),
+            artist = "Gothenburg Sound",
+        ),
     )
 }

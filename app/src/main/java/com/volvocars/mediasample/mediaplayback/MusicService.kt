@@ -18,11 +18,13 @@ package com.volvocars.mediasample.mediaplayback
 import android.app.PendingIntent
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.utils.MediaConstants
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.volvocars.mediasample.common.logging.logd
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -39,7 +41,7 @@ class MusicService : MediaBrowserServiceCompat() {
         // Build a PendingIntent that can be used to launch the UI.
         val sessionActivityPendingIntent =
                 packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
-                    PendingIntent.getActivity(this, 0, sessionIntent, 0)
+                    PendingIntent.getActivity(this, 0, sessionIntent, PendingIntent.FLAG_IMMUTABLE)
                 }
 
         mediaSession.setSessionActivity(sessionActivityPendingIntent)
@@ -48,6 +50,12 @@ class MusicService : MediaBrowserServiceCompat() {
         mediaSessionConnector = MediaSessionConnector(mediaSession)
         mediaSessionConnector.setPlayer(mediaPlayer)
         mediaSessionConnector.setPlaybackPreparer(PlaybackPreparer(mediaPlayer, mediaLibrary))
+        mediaSessionConnector.setQueueNavigator(object : TimelineQueueNavigator(mediaSession) {
+            override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
+                return mediaLibrary.getAllSongs().getOrNull(windowIndex)?.description
+                    ?: MediaDescriptionCompat.Builder().build()
+            }
+        })
         sessionToken = mediaSession.sessionToken
         logd("media session created with token: $sessionToken")
     }
