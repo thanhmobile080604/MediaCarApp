@@ -11,13 +11,14 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.volvocars.mediasample.common.logging.logd
-import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MusicService : MediaBrowserServiceCompat() {
-    private val mediaLibrary: MediaLibrary by inject()
-    private val mediaPlayer: Player by inject { parametersOf(this) }
-    private val mediaSession: MediaSessionCompat by inject { parametersOf(this) }
+    @Inject lateinit var mediaLibrary: MediaLibrary
+    @Inject lateinit var mediaPlayer: Player
+    @Inject lateinit var mediaSession: MediaSessionCompat
     private lateinit var mediaSessionConnector: MediaSessionConnector
 
     override fun onCreate() {

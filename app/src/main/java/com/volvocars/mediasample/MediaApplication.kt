@@ -1,11 +1,7 @@
 package com.volvocars.mediasample
 
 import android.app.Application
-import com.volvocars.mediasample.common.DependencyBootstrapper
+import dagger.hilt.android.HiltAndroidApp
 
-class MediaApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        DependencyBootstrapper.bootstrap(this)
-    }
-}
+@HiltAndroidApp
+class MediaApplication : Application()
