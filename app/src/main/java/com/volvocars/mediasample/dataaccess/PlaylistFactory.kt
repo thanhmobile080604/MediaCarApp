@@ -45,7 +45,7 @@ class PlaylistFactory(
         ,
         Song(
             id = "second_song_id",
-            title = "Track 2 - Highway Drive",
+            title = "Track 2 - Highway Drives",
             subtitle = "Electronic Beats",
             description = "Dynamic energetic beats for highway cruising",
             mediaArtUri = resourceUriUtil.getUriFor(R.drawable.abba_album_art).toString(),
