@@ -47,6 +47,7 @@ class MusicService : MediaBrowserServiceCompat() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         logd("service destroyed!")
         mediaSession.run {
             isActive = false
