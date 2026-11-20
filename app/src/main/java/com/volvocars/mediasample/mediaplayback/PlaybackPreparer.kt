@@ -38,16 +38,16 @@ class PlaybackPreparer(
     }
 
     override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
+        val neededSongIndex = mediaLibrary.getSongIndex(mediaId)
         val allSongs = mediaLibrary.getAllSongs()
-        val songIndex = allSongs.indexOfFirst { it.id == mediaId }
-        if (songIndex == -1) {
+        if (neededSongIndex == -1) {
             loge("Media not found: $mediaId")
             return
         }
-        logd("prepare from media id: $mediaId at index: $songIndex")
+        logd("prepare from media id: $mediaId at index: $neededSongIndex")
         player.playWhenReady = playWhenReady
         player.stop()
-        player.setMediaItems(allSongs.map { it.toExoMediaItem() }, songIndex, 0)
+        player.setMediaItems(allSongs.map { it.toExoMediaItem() }, neededSongIndex, 0)
         player.prepare()
     }
 

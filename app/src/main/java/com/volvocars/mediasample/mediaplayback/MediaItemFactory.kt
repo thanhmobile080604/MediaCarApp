@@ -8,10 +8,10 @@ import com.volvocars.mediasample.R
 import com.volvocars.mediasample.domain.Song
 
 class MediaItemFactory(private val context: Context) {
-    fun createBrowsableRootMediaItem(rootId: String): MediaMetadataCompat =
+    fun createBrowsableMediaItem(id: String, title: String): MediaMetadataCompat =
             MediaMetadataCompat.Builder().apply {
-                id = rootId
-                title = context.getString(R.string.browsable_tab_label)
+                this.id = id
+                this.title = title
                 flag = MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
             }.build()
 

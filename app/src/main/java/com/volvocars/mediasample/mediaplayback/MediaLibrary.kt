@@ -14,19 +14,22 @@ import com.volvocars.mediasample.domain.SongRepository
  *    |__ Song 2
  */
 class MediaLibrary(mediaItemFactory: MediaItemFactory, songRepository: SongRepository) {
-    private val playlist: Playlist = songRepository.retrievePlaylist()
+    private val playlists: List<Playlist> = songRepository.retrievePlaylists()
     private val library = mutableMapOf<String, List<MediaMetadataCompat>>()
 
     init {
-        library[BROWSABLE_ROOT_ID] = listOf(
-            mediaItemFactory.createBrowsableRootMediaItem(playlist.id)
-        )
-        library[playlist.id] = playlist.songs.mapIndexed { songIndex, song ->
-            mediaItemFactory.createPlayableMediaItem(
-                song = song,
-                playlistSize = playlist.songs.size,
-                songNumber = songIndex + 1
-            )
+        library[BROWSABLE_ROOT_ID] = playlists.map { playlist ->
+            mediaItemFactory.createBrowsableMediaItem(playlist.id, playlist.title)
+        }
+
+        playlists.forEach { playlist ->
+            library[playlist.id] = playlist.songs.mapIndexed { songIndex, song ->
+                mediaItemFactory.createPlayableMediaItem(
+                    song = song,
+                    playlistSize = playlist.songs.size,
+                    songNumber = songIndex + 1
+                )
+            }
         }
     }
 
@@ -35,12 +38,12 @@ class MediaLibrary(mediaItemFactory: MediaItemFactory, songRepository: SongRepos
         return library[id]
     }
 
-    fun getSongById(id: String): MediaMetadataCompat? {
-        return library[playlist.id]?.find { it.id == id }
+    fun getSongIndex(id: String): Int {
+        return getAllSongs().indexOfFirst { it.id == id }
     }
 
     fun getAllSongs(): List<MediaMetadataCompat> {
-        return library[playlist.id] ?: emptyList()
+        return playlists.flatMap { library[it.id] ?: emptyList() }
     }
 }
 

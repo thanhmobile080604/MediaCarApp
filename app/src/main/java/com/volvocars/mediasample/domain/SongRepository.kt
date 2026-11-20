@@ -1,5 +1,5 @@
 package com.volvocars.mediasample.domain
 
 interface SongRepository {
-    fun retrievePlaylist(): Playlist
+    fun retrievePlaylists(): List<Playlist>
 }
